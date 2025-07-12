@@ -207,23 +207,24 @@ const slides = document.querySelectorAll('.recommendation-card');
 const dots = document.querySelectorAll('.dot');
 const container = document.querySelector('.recommendations-container');
 const totalSlides = slides.length;
-const visibleSlides = 3; // Show 3 cards at a time
-const maxSlides = totalSlides - visibleSlides + 1;
+const visibleSlides = 4; // 4 cards visible at a time
+const maxSlides = 5; // Force 5 slide positions to match 5 dots
 
 function showSlide(index) {
+  // Ensure index loops back to 0 after reaching maxSlides - 1
+  index = index % maxSlides;
+  
   // Remove active class from all dots
   dots.forEach(dot => dot.classList.remove('active'));
   
   // Calculate transform based on current slide
-  const slideWidth = 320 + 24; // card width + gap
-  const transform = -index * slideWidth;
+  const slideWidth = 320 + 24; // card width (320px) + gap (24px from 1.5rem)
+  const transform = -index * (slideWidth / (visibleSlides - 1)) * (totalSlides - visibleSlides + 1) / (maxSlides - 1);
   
   container.style.transform = `translateX(${transform}px)`;
   
   // Add active class to current dot
-  if (dots[index]) {
-    dots[index].classList.add('active');
-  }
+  dots[index].classList.add('active');
   
   currentSlide = index;
 }
